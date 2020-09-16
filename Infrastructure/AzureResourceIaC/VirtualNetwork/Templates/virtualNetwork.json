@@ -89,6 +89,7 @@
                 "networkSecurityGroupName": "",
                 "routeTableName": "",
                 "delegations": "",
+                "privateEndpointNetworkPolicies": "Disabled",
                 "serviceEndpoints": [
                     {
                         "service": "Microsoft.EventHub"
@@ -114,6 +115,7 @@
                 "networkSecurityGroupName": "",
                 "routeTableName": "",
                 "delegations": "",
+                "privateEndpointNetworkPolicies": "",
                 "serviceEndpoints": []
             }
         ],
@@ -188,7 +190,9 @@
                                 "networkSecurityGroup": "[if(empty(variables('subnets')[copyIndex('subnets')].networkSecurityGroupName), json('null'), json(concat('{\"id\": \"', resourceId('Microsoft.Network/networkSecurityGroups', variables('subnets')[copyIndex('subnets')].networkSecurityGroupName), '\"}')))]",
                                 "routeTable": "[if(empty(variables('subnets')[copyIndex('subnets')].routeTableName), json('null'), json(concat('{\"id\": \"', resourceId('Microsoft.Network/routeTables', variables('subnets')[copyIndex('subnets')].routeTableName), '\"}')))]",
                                 "serviceEndpoints": "[if(empty(variables('subnets')[copyIndex('subnets')].serviceEndpoints), json('null'), variables('subnets')[copyIndex('subnets')].serviceEndpoints)]",
-                                "delegations": "[if(empty(variables('subnets')[copyIndex('subnets')].delegations), json('null'),variables('subnets')[copyIndex('subnets')].delegations)]"
+                                "delegations": "[if(empty(variables('subnets')[copyIndex('subnets')].delegations), json('null'),variables('subnets')[copyIndex('subnets')].delegations)]",
+                                "privateEndpointNetworkPolicies": "[if(empty(variables('subnets')[copyIndex('subnets')].privateEndpointNetworkPolicies), json('null'),variables('subnets')[copyIndex('subnets')].privateEndpointNetworkPolicies)]"
+
                             }
                         }
                     }

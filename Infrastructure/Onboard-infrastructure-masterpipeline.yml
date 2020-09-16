@@ -3,11 +3,6 @@ trigger: none
 
 name: XXXX Azure Infrastructure Deployment - ${{ parameters.ResourceGroupName }}
 
-parameters:
-
-
-variables:
-
 stages:
 
 - stage: Create_WebAPP

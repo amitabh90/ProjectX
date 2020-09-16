@@ -1,0 +1,44 @@
+# This yaml pipeline will deploy Application Insights
+trigger: none
+
+name: Create Application Insights
+workspace:
+  clean: all
+
+pool:
+  vmImage: "windows-2019"
+
+parameters:
+  - name: azureSubscription
+    type: string
+    displayName: Service Connection name (Azure)
+    default: amitabhdas-azure
+  - name: resourceGroupName
+    type: string
+    displayName: Resourcegroup name for the Application Insights
+    default: RGCloud
+  - name: appInsightsName
+    type: string
+    displayName: Application Insights name
+    default: mydemoappinsight
+  - name: location
+    type: string
+    displayName: Location for Application Insights
+    default: eastus2
+  - name: appInsightsType
+    type: string
+    displayName: Application Insights type (ex- web,java,other)
+    default: web
+steps:
+- task: AzurePowerShell@5
+  displayName: create - ApplicationInsights
+  condition: succeeded()
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription }}
+    ScriptType: 'FilePath'
+    ScriptPath: 'Scripts/Create-AppInsights.ps1'
+    ScriptArguments:  -ResourceGroupName ${{parameters.resourceGroupName }}
+             -AppInsightsName '${{parameters.appInsightsName }}'
+             -Location '${{parameters.location }}'
+             -AppInsightsType '${{parameters.appInsightsType }}'
+    azurePowerShellVersion: 'LatestVersion'

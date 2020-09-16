@@ -33,7 +33,7 @@ steps:
   inputs:
     azureSubscription: ${{parameters.azureSubscription }}
     ScriptType: 'FilePath'
-    ScriptPath: 'Scripts/Create-WebApp.ps1'
+    ScriptPath: 'AzureResourceIaC/WebApp/Scripts/Create-WebApp.ps1'
     ScriptArguments:  -ResourceGroupName ${{parameters.resourceGroupName }}
              -WebAppName '${{parameters.WebAppName }}'
              -Location '${{parameters.location }}'

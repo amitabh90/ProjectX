@@ -20,3 +20,12 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: AzureResourceIaC/VirtualNetwork/Pipeline/create-virtualnetwork.yaml
+
+- stage: Create_StorageAccount
+  displayName: Create_StorageAccount
+  jobs:
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: AzureResourceIaC/StorageAccounts/Pipeline/create-storageaccount.yaml

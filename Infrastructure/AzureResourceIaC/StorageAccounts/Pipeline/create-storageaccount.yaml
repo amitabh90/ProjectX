@@ -1,0 +1,42 @@
+# This yaml template pipeline will deploy Storage Account
+
+parameters:
+  - name: azureSubscription
+    type: string
+    displayName: Service Connection name (Azure)
+    default: amitabhdas-azure
+  - name: resourceGroupName
+    type: string
+    displayName: Resourcegroup name for the Storage Account
+    default: RGCloud
+  - name: storageAccountName
+    type: string
+    displayName: Storage Account name
+    default: myddstorg01
+  - name: location
+    type: string
+    displayName: Location for Storage Account
+    default: eastus2
+  - name: storageAccountKind
+    type: string
+    displayName: storageAccountKind type (ex- "Storage","StorageV2","BlobStorage", "FileStorage","BlockBlobStorage")
+    default: StorageV2
+  - name: storageAccountSku
+    type: string
+    displayName: StorageAccountSku type (ex- "Standard_LRS","Standard_GRS","Standard_RAGRS","Standard_ZRS","Premium_LRS", "Premium_ZRS", "Standard_GZRS", "Standard_RAGZRS")
+    default: Standard_LRS
+
+steps:
+- task: AzurePowerShell@5
+  displayName: Create - Storage Account
+  condition: succeeded()
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription }}
+    ScriptType: 'FilePath'
+    ScriptPath: 'Infrastructure/AzureResourceIaC/StorageAccounts/Scripts/Create-StorageAccount.ps1'
+    ScriptArguments:  -ResourceGroupName ${{parameters.resourceGroupName }}
+             -StorageAccountNameName '${{parameters.storageAccountName }}'
+             -Location '${{parameters.location }}'
+             -StorageAccountKind '${{parameters.storageAccountKind }}'
+             -StorageAccountSku '${{parameters.storageAccountSku }}'
+    azurePowerShellVersion: 'LatestVersion'

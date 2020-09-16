@@ -1,0 +1,32 @@
+# This yaml template pipeline will deploy Virtual network
+
+parameters:
+  - name: azureSubscription
+    type: string
+    displayName: Service Connection name (Azure)
+    default: amitabhdas-azure
+  - name: resourceGroupName
+    type: string
+    displayName: Resourcegroup name for the Virtual Network
+    default: RGCloud
+  - name: vNetName
+    type: string
+    displayName: Virtual Networkname
+    default: demoVnet
+  - name: location
+    type: string
+    displayName: Location for Virtual Network
+    default: eastus2
+
+steps:
+- task: AzurePowerShell@5
+  displayName: Create - Virtual Network
+  condition: succeeded()
+  inputs:
+    azureSubscription: ${{parameters.azureSubscription }}
+    ScriptType: 'FilePath'
+    ScriptPath: 'Infrastructure/AzureResourceIaC/VirtualNetwork/Scripts/Create-VirtualNetwork.ps1'
+    ScriptArguments:  -ResourceGroupName ${{parameters.resourceGroupName }}
+             -VNetName '${{parameters.vNetName }}'
+             -Location '${{parameters.location }}'
+    azurePowerShellVersion: 'LatestVersion'

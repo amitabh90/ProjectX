@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-	This powershell script is going to deploy Web App.
+	This powershell script is going to deploy Vnet with subnets.
 
 .DESCRIPTION
-    This script creates an Web App by useing the ARM template.
+    This script creates an Vnet by useing the ARM template.
 
 .OUTPUTS
     Metadata Information
@@ -11,13 +11,10 @@
 .EXAMPLE
     $Params = @{
         ResourceGroupName = "Test-RG1"
-        webAppName = "demoAPP"
-        appServicePlanSku = "Shared"
-        appServicePlanSkuCode = "S2"
-        httpsOnly = "true"
+        vNetName = "demovnet"
     }
 
-    Create-WebApp.ps1 @Params
+    Create-VirtualNetwork.ps1 @Params
 #>
 
 [CmdletBinding()]
@@ -26,31 +23,20 @@ Param (
     [String] $ResourceGroupName,
 
     [Parameter(Mandatory = $true)]
-    [String] $WebAppName,
+    [String] $VNetName,
 
     [Parameter(Mandatory = $false)]
-    [ValidateSet('eastus2', 'westeurope', 'westus2')]
-    [String] $Location,
-
-    [Parameter(Mandatory = $true)]
-    [ValidateSet('Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic')]
-    [String] $AppServicePlanSku,
-
-    [Parameter(Mandatory = $true)]
-    [ValidateSet("F1", "D1", "B1", "B2", "B3",  "S1",  "S2",  "S3",  "P1", "P2",  "P3",  "P1V2", "P2V2", "P3V2", "Y1")]
-    [String] $AppServicePlanSkuCode
+    [String] $Location
 
 )
 
 Write-Verbose "Creating parameters object for ARM Template."
 $ARMParams = @{
-    webAppName                      = $WebAppName
+    vNetName                      = $VNetName
     location                        = $Location
-    appServicePlanSku               = $AppServicePlanSku
-    appServicePlanSkuCode           = $AppServicePlanSkuCode
 }
 
-$TemplateName = 'webApp.json'
+$TemplateName = 'virtualNetwork.json'
 
 $TemplateFile = Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$TemplateName"
 

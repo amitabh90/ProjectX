@@ -11,3 +11,12 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml
+
+- stage: Create_VirtualNetwork
+  displayName: Create_VirtualNetwork
+  jobs:
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: AzureResourceIaC/VirtualNetwork/Pipeline/create-virtualnetwork.yaml

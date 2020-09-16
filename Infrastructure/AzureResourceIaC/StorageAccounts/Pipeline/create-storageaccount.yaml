@@ -36,7 +36,7 @@ steps:
     ScriptType: 'FilePath'
     ScriptPath: 'Infrastructure/AzureResourceIaC/StorageAccounts/Scripts/Create-StorageAccount.ps1'
     ScriptArguments:  -ResourceGroupName ${{parameters.resourceGroupName }}
-             -StorageAccountNameName '${{parameters.storageAccountName }}'
+             -StorageAccountName '${{parameters.storageAccountName }}'
              -Location '${{parameters.location }}'
              -StorageAccountKind '${{parameters.storageAccountKind }}'
              -StorageAccountSku '${{parameters.storageAccountSku }}'

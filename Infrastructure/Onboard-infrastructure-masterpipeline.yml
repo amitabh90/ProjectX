@@ -12,4 +12,4 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-    - template: Infrastructure/AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml
+    - template: /AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml

@@ -1,7 +1,7 @@
 ## This master pipleine will deploy the full azure infrastructure for the XXXXXXX
 trigger: none
 
-name: XXXX Azure Infrastructure Deployment - ${{ parameters.ResourceGroupName }}
+name: XXXX Azure Infrastructure Deployment
 
 stages:
 

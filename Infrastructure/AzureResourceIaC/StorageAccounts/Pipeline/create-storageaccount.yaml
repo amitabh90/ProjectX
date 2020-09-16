@@ -29,6 +29,7 @@ parameters:
 steps:
 - task: AzurePowerShell@5
   displayName: Create - Storage Account
+  
   condition: succeeded()
   inputs:
     azureSubscription: ${{parameters.azureSubscription }}

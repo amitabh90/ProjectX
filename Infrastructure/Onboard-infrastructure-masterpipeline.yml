@@ -23,6 +23,7 @@ stages:
 
 - stage: Create_StorageAccount
   displayName: Create_StorageAccount
+  dependsOn: Create_VirtualNetwork
   jobs:
   - job:
     pool:

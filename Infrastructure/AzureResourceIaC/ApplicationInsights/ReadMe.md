@@ -30,10 +30,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ```json
 "tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com"
-    }
+    "value":{
+                "Env": "nonprod",
+                "DevOwner": "Shmuel.Laufer@ab-inbev.com",
+                "ProjectName": "brewdatportal",
+                "Type": "frontend"
+            }
 }
 ```
 

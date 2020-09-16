@@ -1,12 +1,4 @@
-# This yaml pipeline will deploy Web App
-trigger: none
-
-name: Create Web App
-workspace:
-  clean: all
-
-pool:
-  vmImage: "windows-2019"
+# This yaml template pipeline will deploy Web App
 
 parameters:
   - name: azureSubscription

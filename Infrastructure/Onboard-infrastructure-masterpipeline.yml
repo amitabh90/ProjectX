@@ -1,0 +1,21 @@
+## This master pipleine will deploy the full azure infrastructure for the XXXXXXX
+trigger: none
+
+name: XXXX Azure Infrastructure Deployment - ${{ parameters.ResourceGroupName }}
+
+parameters:
+
+
+variables:
+
+stages:
+
+- stage: Create_WebAPP
+  displayName: Create_WebAPP
+  jobs:
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: \AzureResourceIaC\WebApp\Pipeline\create-webapp.yaml
+

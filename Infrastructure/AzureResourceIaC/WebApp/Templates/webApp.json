@@ -1,0 +1,202 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "Required. Name of the Web App"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "appServicePlanSku": {
+            "type": "string",
+            "allowedValues": [
+                "Free",
+                "Shared",
+                "Basic",
+                "Standard",
+                "Premium",
+                "Dynamic"
+            ],
+            "defaultValue": "Standard",
+            "metadata": {
+                "description": "Sku for the specified app service plan."
+            }
+        },
+        "appServicePlanSkuCode": {
+            "type": "string",
+            "allowedValues": [
+                "F1",
+                "D1",
+                "B1",
+                "B2",
+                "B3",
+                "S1",
+                "S2",
+                "S3",
+                "P1",
+                "P2",
+                "P3",
+                "P1V2",
+                "P2V2",
+                "P3V2",
+                "Y1"
+            ],
+            "defaultValue": "S2",
+            "metadata": {
+                "description": "Sku Code for the specified Sku. For example sku codes allowed for Dynamic Sku is only Y1."
+            }
+        },
+        "httpsOnly": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Configures a web site to accept only https requests. Issues redirect for http requests."
+            }
+        },
+        "managedServiceIdentity": {
+            "type": "string",
+            "defaultValue": "SystemAssigned",
+            "allowedValues": [
+                "None",
+                "SystemAssigned",
+                "UserAssigned",
+                "SystemAssigned, UserAssigned",
+                "UserAssigned, SystemAssigned"
+            ],
+            "metadata": {
+                "description": "Optional. Type of managed service identity."
+            }
+        },
+        "enableMonitoring": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. If true, ApplicationInsights will be configured for the Function App."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {
+                "Env": "nonprod",
+                "DevOwner": "Shmuel.Laufer@ab-inbev.com",
+                "ProjectName": "brewdatportal",
+                "Type": "frontend"
+            },
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        }
+    },
+    "variables": {
+        "appServicePlanName": "[concat(parameters('webAppName'),'-appserviceplan')]",
+        "appInsightsName": "[concat(parameters('webAppName'),'-appinsights')]",
+        "linuxFxVersion": "NODE|10.14"
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-08-01",
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[variables('appServicePlanName')]",
+            "tags": "[parameters('tags')]",
+            "location": "[parameters('location')]",
+            "kind": "app,linux",
+            "properties": {
+                "reserved": true
+            },
+            "sku": {
+                "Tier": "[parameters('appServicePlanSku')]",
+                "Name": "[parameters('appServicePlanSkuCode')]"
+            }
+        },
+        {
+            "apiVersion": "2019-08-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[parameters('webAppName')]",
+            "location": "[parameters('location')]",
+            "kind": "app,linux",
+            "tags": "[parameters('tags')]",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/',variables('appServicePlanName'))]"
+            ],
+            "identity": {
+                "type": "[parameters('managedServiceIdentity')]"
+            },
+            "properties": {
+                "name": "[parameters('webAppName')]",
+                "httpsOnly": "[parameters('httpsOnly')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "siteConfig": {
+                    "linuxFxVersion": "[variables('linuxFxVersion')]",
+                    "alwaysOn": true
+                }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2019-08-01",
+                    "name": "appsettings",
+                    "type": "config",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
+                    ],
+                    "properties": {
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',variables('appInsightsName')), '2015-05-01').InstrumentationKey, json('null'))]",
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',variables('appInsightsName')), '2015-05-01').ConnectionString, json('null'))]"
+                    }
+                }
+            ]
+        },
+        {
+            "apiVersion": "2018-05-01-preview",
+            "name": "[variables('appInsightsName')]",
+            "type": "microsoft.insights/components",
+            "location": "[parameters('location')]",
+            "condition": "[parameters('enableMonitoring')]",
+            "kind": "web",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "ApplicationId": "[parameters('webAppName')]",
+                "Application_Type": "web",
+                "Request_Source": "WebAppExtensionCreate"
+            }
+        }
+    ],
+    "outputs": {
+        "webAppName": {
+            "type": "string",
+            "value": "[parameters('webAppName')]",
+            "metadata": {
+                "description": "Name of the Web App."
+            }
+        },
+        "webAppResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]",
+            "metadata": {
+                "description": "The Resource ID of the WebApp."
+            }
+        },
+        "webAppResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The REsource Group in which the resource is created."
+            }
+        },
+        "assignedIdentityID": {
+            "type": "string",
+            "value": "[if(contains(parameters('managedServiceIdentity'),'SystemAssigned'),reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2019-08-01', 'full').identity.principalId,'')]",
+            "metadata": {
+                "description": "User id of the created system assigned identity"
+            }
+        }
+    }
+}

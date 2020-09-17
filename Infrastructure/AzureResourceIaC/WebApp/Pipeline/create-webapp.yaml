@@ -29,7 +29,7 @@ steps:
     ScriptType: 'FilePath'
     ScriptPath: 'Infrastructure/AzureResourceIaC/WebApp/Scripts/Create-WebApp.ps1'
     ScriptArguments:  -ResourceGroupName ${{parameters.resourceGroupName }}
-             -WebAppName '${{parameters.WebAppName }}'
+             -WebAppName '${{parameters.webAppName }}'
              -Location '${{parameters.location }}'
              -AppServicePlanSku '${{parameters.appServicePlanSku }}'
              -AppServicePlanSkuCode '${{parameters.appServicePlanSkuCode }}'

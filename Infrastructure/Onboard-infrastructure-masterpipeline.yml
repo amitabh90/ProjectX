@@ -64,11 +64,11 @@ stages:
     - template: AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml
       parameters:
         -azureSubscription: ${{parameters.azureSubscription }}
-        -ResourceGroupName: ${{parameters.resourceGroupName }}
-        -WebAppName: '${{parameters.WebAppName }}'
-        -Location: '${{parameters.location }}'
-        -AppServicePlanSku: '${{parameters.appServicePlanSku }}'
-        -AppServicePlanSkuCode: '${{parameters.appServicePlanSkuCode }}'
+        -resourceGroupName: ${{parameters.resourceGroupName }}
+        -webAppName: '${{parameters.webAppName }}'
+        -location: '${{parameters.location }}'
+        -appServicePlanSku: '${{parameters.appServicePlanSku }}'
+        -appServicePlanSkuCode: '${{parameters.appServicePlanSkuCode }}'
 
 - stage: Create_VirtualNetwork
   displayName: Create_VirtualNetwork

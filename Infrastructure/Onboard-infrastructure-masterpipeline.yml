@@ -1,4 +1,4 @@
-## This master pipleine will deploy the full azure infrastructure for the
+## This master pipleine will deploy the full azure infrastructure.
 
 trigger: none
 
@@ -17,7 +17,7 @@ parameters:
     type: string
     displayName: Location for Resources
     default: eastus2
-#----Web App Parameters--------
+#----Web App Parameters--------#
   - name: webAppName
     type: string
     displayName: Web app name
@@ -30,12 +30,12 @@ parameters:
     type: string
     displayName: AppServicePlanSkuCode type (ex- "F1", "D1", "B1", "B2", "B3",  "S1",  "S2",  "S3",  "P1", "P2",  "P3",  "P1V2", "P2V2", "P3V2", "Y1")
     default: S2
-#------Virtual Network---------
+#------Virtual Network---------#
   - name: vNetName
     type: string
     displayName: Virtual Networkname
     default: demoVnet
-#------Storage Account----------
+#------Storage Account----------#
   - name: storageAccountName
     type: string
     displayName: Storage Account name

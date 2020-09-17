@@ -72,7 +72,7 @@ If ($ErrorMessages) {
     Throw "Template deployment returned the following errors: $ErrorMessages"
 }
 else {
-    Write-Verbose "ApplicationInsights successfully created."
+    Write-Verbose "Web App successfully created."
     Write-Output $($Result.OutputsString)
 
 }

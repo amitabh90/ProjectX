@@ -58,7 +58,7 @@ If ($ErrorMessages) {
     Throw "Template deployment returned the following errors: $ErrorMessages"
 }
 else {
-    Write-Verbose "ApplicationInsights successfully created."
+    Write-Verbose "Virtual Network successfully created."
     Write-Output $($Result.OutputsString)
 
 }

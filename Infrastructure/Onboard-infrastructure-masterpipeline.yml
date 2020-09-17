@@ -1,7 +1,62 @@
-## This master pipleine will deploy the full azure infrastructure for the XXXXXXX
+## This master pipleine will deploy the full azure infrastructure for the
 
 trigger: none
-name: XXXX Azure Infrastructure Deployment
+
+name: Azure Infrastructure Deployment
+
+parameters:
+  - name: azureSubscription
+    type: string
+    displayName: Service Connection name (Azure)
+    default: amitabhdas-azure
+  - name: resourceGroupName
+    type: string
+    displayName: Resourcegroup name for the Web App
+    default: RGCloud
+  - name: location
+    type: string
+    displayName: Location for Resources
+    default: eastus2
+#----Web App Parameters--------
+  - name: webAppName
+    type: string
+    displayName: Web app name
+    default: mydddmmooaap1
+  - name: appServicePlanSku
+    type: string
+    displayName: AppServicePlanSku type (ex- 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic')
+    default: Standard
+  - name: appServicePlanSkuCode
+    type: string
+    displayName: AppServicePlanSkuCode type (ex- "F1", "D1", "B1", "B2", "B3",  "S1",  "S2",  "S3",  "P1", "P2",  "P3",  "P1V2", "P2V2", "P3V2", "Y1")
+    default: S2
+#------Virtual Network---------
+  - name: vNetName
+    type: string
+    displayName: Virtual Networkname
+    default: demoVnet
+#------Storage Account----------
+  - name: storageAccountName
+    type: string
+    displayName: Storage Account name
+    default: mydasstore01
+  - name: storageAccountKind
+    type: string
+    displayName: storageAccountKind type (ex- "Storage","StorageV2","BlobStorage", "FileStorage","BlockBlobStorage")
+    default: StorageV2
+  - name: storageAccountSku
+    type: string
+    displayName: StorageAccountSku type (ex- "Standard_LRS","Standard_GRS","Standard_RAGRS","Standard_ZRS","Premium_LRS", "Premium_ZRS", "Standard_GZRS", "Standard_RAGZRS")
+    default: Standard_LRS
+  - name: vNetName
+    type: string
+    displayName: vnet name for Storage Account private endpoint
+    default: demoVnet
+  - name: subnetName
+    type: string
+    displayName: subnet name for Storage Account private endpoint
+    default: AppSubnet
+
 stages:
 - stage: Create_WebAPP
   displayName: Create_WebAPP
@@ -11,6 +66,12 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml
+      parameters:
+        -ResourceGroupName ${{parameters.resourceGroupName }}
+        -WebAppName '${{parameters.WebAppName }}'
+        -Location '${{parameters.location }}'
+        -AppServicePlanSku '${{parameters.appServicePlanSku }}'
+        -AppServicePlanSkuCode '${{parameters.appServicePlanSkuCode }}'
 
 - stage: Create_VirtualNetwork
   displayName: Create_VirtualNetwork
@@ -20,6 +81,10 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: AzureResourceIaC/VirtualNetwork/Pipeline/create-virtualnetwork.yaml
+      parameters:
+        -ResourceGroupName ${{parameters.resourceGroupName }}
+        -VNetName '${{parameters.vNetName }}'
+        -Location '${{parameters.location }}'
 
 - stage: Create_StorageAccount
   displayName: Create_StorageAccount
@@ -30,3 +95,11 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: AzureResourceIaC/StorageAccounts/Pipeline/create-storageaccount.yaml
+      parameters:
+        -ResourceGroupName ${{parameters.resourceGroupName }}
+        -StorageAccountName '${{parameters.storageAccountName }}'
+        -Location '${{parameters.location }}'
+        -StorageAccountKind '${{parameters.storageAccountKind }}'
+        -StorageAccountSku '${{parameters.storageAccountSku }}'
+        -VNetName '${{parameters.vNetName }}'
+        -SubnetName '${{parameters.subnetName }}'

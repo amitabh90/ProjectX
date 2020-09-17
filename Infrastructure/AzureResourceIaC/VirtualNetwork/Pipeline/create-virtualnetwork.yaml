@@ -4,19 +4,15 @@ parameters:
   - name: azureSubscription
     type: string
     displayName: Service Connection name (Azure)
-    default: amitabhdas-azure
   - name: resourceGroupName
     type: string
     displayName: Resourcegroup name for the Virtual Network
-    default: RGCloud
   - name: vNetName
     type: string
     displayName: Virtual Networkname
-    default: demoVnet
   - name: location
     type: string
     displayName: Location for Virtual Network
-    default: eastus2
 
 steps:
 - task: AzurePowerShell@5

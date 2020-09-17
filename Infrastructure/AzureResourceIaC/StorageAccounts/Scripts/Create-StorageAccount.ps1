@@ -37,7 +37,13 @@ Param (
 
     [Parameter(Mandatory = $true)]
     [ValidateSet("Standard_LRS","Standard_GRS","Standard_RAGRS","Standard_ZRS","Premium_LRS", "Premium_ZRS", "Standard_GZRS", "Standard_RAGZRS")]
-    [String] $StorageAccountSku
+    [String] $StorageAccountSku,
+
+    [Parameter(Mandatory = $true)]
+    [String] $VNetName,
+
+    [Parameter(Mandatory = $true)]
+    [String] $SubnetName
 
 )
 
@@ -47,6 +53,8 @@ $ARMParams = @{
     location                    = $Location
     storageAccountKind          = $StorageAccountKind
     storageAccountSku           = $StorageAccountSku
+    vNetName                    = $VNetName
+    SubnetName                  = $SubnetName
 }
 
 $TemplateName = 'storageAccount.json'
@@ -71,7 +79,6 @@ If ($ErrorMessages) {
     Throw "Template deployment returned the following errors: $ErrorMessages"
 }
 else {
-    Write-Verbose "ApplicationInsights successfully created."
+    Write-Verbose "Storage Account successfully created."
     Write-Output $($Result.OutputsString)
-
 }

@@ -63,6 +63,7 @@ stages:
     steps:
     - template: AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml
       parameters:
+        -azureSubscription ${{parameters.azureSubscription }}
         -ResourceGroupName ${{parameters.resourceGroupName }}
         -WebAppName '${{parameters.WebAppName }}'
         -Location '${{parameters.location }}'
@@ -78,6 +79,7 @@ stages:
     steps:
     - template: AzureResourceIaC/VirtualNetwork/Pipeline/create-virtualnetwork.yaml
       parameters:
+        -azureSubscription ${{parameters.azureSubscription }}
         -ResourceGroupName ${{parameters.resourceGroupName }}
         -VNetName '${{parameters.vNetName }}'
         -Location '${{parameters.location }}'
@@ -92,6 +94,7 @@ stages:
     steps:
     - template: AzureResourceIaC/StorageAccounts/Pipeline/create-storageaccount.yaml
       parameters:
+        -azureSubscription ${{parameters.azureSubscription }}
         -ResourceGroupName ${{parameters.resourceGroupName }}
         -StorageAccountName '${{parameters.storageAccountName }}'
         -Location '${{parameters.location }}'

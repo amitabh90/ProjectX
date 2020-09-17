@@ -63,12 +63,12 @@ stages:
     steps:
     - template: AzureResourceIaC/WebApp/Pipeline/create-webapp.yaml
       parameters:
-        -azureSubscription: ${{parameters.azureSubscription }}
-        -resourceGroupName: ${{parameters.resourceGroupName }}
-        -webAppName: '${{parameters.webAppName }}'
-        -location: '${{parameters.location }}'
-        -appServicePlanSku: '${{parameters.appServicePlanSku }}'
-        -appServicePlanSkuCode: '${{parameters.appServicePlanSkuCode }}'
+        azureSubscription: ${{parameters.azureSubscription }}
+        resourceGroupName: ${{parameters.resourceGroupName }}
+        webAppName: '${{parameters.webAppName }}'
+        location: '${{parameters.location }}'
+        appServicePlanSku: '${{parameters.appServicePlanSku }}'
+        appServicePlanSkuCode: '${{parameters.appServicePlanSkuCode }}'
 
 - stage: Create_VirtualNetwork
   displayName: Create_VirtualNetwork
@@ -79,10 +79,10 @@ stages:
     steps:
     - template: AzureResourceIaC/VirtualNetwork/Pipeline/create-virtualnetwork.yaml
       parameters:
-        -azureSubscription: ${{parameters.azureSubscription }}
-        -ResourceGroupName: ${{parameters.resourceGroupName }}
-        -VNetName: '${{parameters.vNetName }}'
-        -Location: '${{parameters.location }}'
+        azureSubscription: ${{parameters.azureSubscription }}
+        ResourceGroupName: ${{parameters.resourceGroupName }}
+        VNetName: '${{parameters.vNetName }}'
+        Location: '${{parameters.location }}'
 
 - stage: Create_StorageAccount
   displayName: Create_StorageAccount
@@ -94,11 +94,11 @@ stages:
     steps:
     - template: AzureResourceIaC/StorageAccounts/Pipeline/create-storageaccount.yaml
       parameters:
-        -azureSubscription: ${{parameters.azureSubscription }}
-        -ResourceGroupName: ${{parameters.resourceGroupName }}
-        -StorageAccountName: '${{parameters.storageAccountName }}'
-        -Location: '${{parameters.location }}'
-        -StorageAccountKind: '${{parameters.storageAccountKind }}'
-        -StorageAccountSku: '${{parameters.storageAccountSku }}'
-        -VNetName: '${{parameters.vNetName }}'
-        -SubnetName: '${{parameters.subnetName }}'
+        azureSubscription: ${{parameters.azureSubscription }}
+        ResourceGroupName: ${{parameters.resourceGroupName }}
+        StorageAccountName: '${{parameters.storageAccountName }}'
+        Location: '${{parameters.location }}'
+        StorageAccountKind: '${{parameters.storageAccountKind }}'
+        StorageAccountSku: '${{parameters.storageAccountSku }}'
+        VNetName: '${{parameters.vNetName }}'
+        SubnetName: '${{parameters.subnetName }}'

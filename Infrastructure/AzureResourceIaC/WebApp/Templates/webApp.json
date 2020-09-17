@@ -136,7 +136,8 @@
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
                 "siteConfig": {
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
-                    "alwaysOn": true
+                    "alwaysOn": true,
+                    "ftpsState": "Disabled"
                 }
             },
             "resources": [
